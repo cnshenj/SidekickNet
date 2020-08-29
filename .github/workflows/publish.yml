@@ -18,6 +18,6 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
     - name: Publish with dotnet
-      run: dotnet nuget push "**/SidekickNet.*.nupkg" -s "https://nuget.pkg.github.com/cnshenj/index.json" -k ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push "**/SidekickNet.*.nupkg" -s "https://api.nuget.org/v3/index.json" -k ${{ secrets.NUGET_API_KEY }}
 #    - name: Publish symbols with dotnet
 #      run: dotnet nuget push "bin/Release/SidekickNet.*.snupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
