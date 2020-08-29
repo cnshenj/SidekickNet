@@ -1,0 +1,23 @@
+name: Publish SidekickNet NuGet packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.302
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Publish with dotnet
+      run: dotnet nuget push "bin/Release/SidekickNet.*.nupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
+    - name: Publish symbols with dotnet
+      run: dotnet nuget push "bin/Release/SidekickNet.*.snupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
