@@ -18,6 +18,6 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
     - name: Publish with dotnet
-      run: dotnet nuget push "bin/Release/SidekickNet.*.nupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
-    - name: Publish symbols with dotnet
-      run: dotnet nuget push "bin/Release/SidekickNet.*.snupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
+      run: dotnet nuget push "**/SidekickNet.*.nupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
+#    - name: Publish symbols with dotnet
+#      run: dotnet nuget push "bin/Release/SidekickNet.*.snupkg" --source "https://nuget.pkg.github.com/cnshenj/index.json"
