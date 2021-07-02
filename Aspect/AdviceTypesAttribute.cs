@@ -10,11 +10,12 @@ using System.Linq;
 namespace SidekickNet.Aspect
 {
     /// <summary>
-    /// A delegate that gets an instance of the specified advice type.
+    /// A delegate that gets an instance of the specified type.
+    /// Used to get instances of advices or bundles from providers, such as dependency injection.
     /// </summary>
-    /// <param name="adviceType">The type of the advice to get.</param>
-    /// <returns>An instance of the specified advice type.</returns>
-    public delegate IAdvice GetAdviceInstance(Type adviceType);
+    /// <param name="instanceType">The type of the instance to get.</param>
+    /// <returns>An instance of the specified type.</returns>
+    public delegate object GetInstance(Type instanceType);
 
     /// <summary>
     /// The attribute to add multiple advices to program elements.
@@ -52,29 +53,29 @@ namespace SidekickNet.Aspect
         }
 
         /// <summary>
-        /// Gets or sets a method that gets an instance of an advice type.
+        /// Gets or sets a method that gets instances of types.
         /// For example, a dependency injection container can be used.
         /// </summary>
-        public static GetAdviceInstance? GetAdviceInstance { get; set; }
+        public static GetInstance? GetInstance { get; set; }
 
         /// <summary>Gets advices to apply to program elements.</summary>
         public IList<IAdvice> Advices
         {
             get
             {
-                // Delay the creation of advices to give time for GetAdvice to be initialized
+                // Delay the creation of advices to give time for GetInstance to be initialized
                 if (this.advices == null)
                 {
-                    if (GetAdviceInstance == null)
+                    if (GetInstance == null)
                     {
                         throw new InvalidOperationException(
-                            $"'{nameof(AdviceTypesAttribute)}'.'{nameof(GetAdviceInstance)}' must be initialized first.");
+                            $"'{nameof(AdviceTypesAttribute)}'.'{nameof(GetInstance)}' must be initialized first.");
                     }
 
                     this.advices = new List<IAdvice>();
                     foreach (var adviceType in this.adviceTypes)
                     {
-                        this.AddAdvice(adviceType);
+                        this.AddAdvice(GetInstance(adviceType));
                     }
                 }
 
@@ -82,17 +83,16 @@ namespace SidekickNet.Aspect
             }
         }
 
-        private void AddAdvice(Type adviceType)
+        private void AddAdvice(object adviceOrBundle)
         {
-            var advice = GetAdviceInstance!(adviceType);
-            if (advice is AdviceTypeBundle bundle)
+            if (adviceOrBundle is AdviceTypeBundle bundle)
             {
                 foreach (var bundledAdviceType in bundle.AdviceTypes)
                 {
-                    this.AddAdvice(bundledAdviceType);
+                    this.AddAdvice(GetInstance!(bundledAdviceType));
                 }
             }
-            else
+            else if (adviceOrBundle is IAdvice advice)
             {
                 this.advices!.Add(advice);
                 var index = this.advices.Count - 1;

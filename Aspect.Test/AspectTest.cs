@@ -2,35 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using SidekickNet.Aspect;
 using SidekickNet.Aspect.DynamicInheritance;
 using SidekickNet.Aspect.SimpleInjector;
 
 using SimpleInjector;
 
 using Xunit;
-using Xunit.Abstractions;
 
-namespace Sidekicknet.Aspect.Test
+namespace SidekickNet.Aspect.Test
 {
     public class AspectTest
     {
-        private readonly ITestOutputHelper output;
-
-        public AspectTest(ITestOutputHelper output)
-        {
-            this.output = output;
-        }
-
         [Fact]
         public void Property_Getter_Setter()
         {
             var container = this.Prepare();
             var a = container.GetInstance<IContract>();
-            var name = "Test";
+            const string name = "Test";
             a.Name = name;
             var result = a.Name;
-            Console.WriteLine($"Name is {result}");
             Assert.Equal(name, result);
 
             var log = LoggingAdviceAttribute.Log;
@@ -89,7 +79,7 @@ namespace Sidekicknet.Aspect.Test
         public void Advices_By_Types()
         {
             var container = this.Prepare();
-            AdviceTypesAttribute.GetAdviceInstance = type => (IAdvice)container.GetInstance(type);
+            AdviceTypesAttribute.GetInstance = container.GetInstance;
 
             var a = container.GetInstance<Base>();
             var value = a.AdvicesByTypes();
@@ -98,6 +88,23 @@ namespace Sidekicknet.Aspect.Test
             var log = LoggingAdviceAttribute.Log;
             Assert.Equal($"{LoggingAdviceAttribute.EnterPrefix} {nameof(a.AdvicesByTypes)}", log[0].message);
             Assert.Equal($"{LoggingAdviceAttribute.ExitPrefix} {nameof(a.AdvicesByTypes)}", log[1].message);
+            Assert.True(ValidationAdviceAttribute.Validated);
+            Assert.InRange(ValidationAdviceAttribute.Timestamp, log[0].timestamp, log[1].timestamp);
+        }
+
+        [Fact]
+        public void Advices_By_Type_Bundle()
+        {
+            var container = this.Prepare();
+            AdviceTypesAttribute.GetInstance = container.GetInstance;
+
+            var a = container.GetInstance<Base>();
+            var value = a.AdvicesByTypeBundle();
+            Assert.Equal(nameof(a.AdvicesByTypeBundle), value);
+
+            var log = LoggingAdviceAttribute.Log;
+            Assert.Equal($"{LoggingAdviceAttribute.EnterPrefix} {nameof(a.AdvicesByTypeBundle)}", log[0].message);
+            Assert.Equal($"{LoggingAdviceAttribute.ExitPrefix} {nameof(a.AdvicesByTypeBundle)}", log[1].message);
             Assert.True(ValidationAdviceAttribute.Validated);
             Assert.InRange(ValidationAdviceAttribute.Timestamp, log[0].timestamp, log[1].timestamp);
         }
@@ -247,6 +254,7 @@ namespace Sidekicknet.Aspect.Test
 
             container.Register<LoggingAdviceAttribute>();
             container.Register<ValidationAdviceAttribute>();
+            container.Register<LoggingValidationBundle>();
             container.Register<IContract, Derived>();
             container.Register<Base, Derived>();
 
@@ -332,13 +340,16 @@ namespace Sidekicknet.Aspect.Test
         [AdviceTypes(typeof(LoggingAdviceAttribute), typeof(ValidationAdviceAttribute))]
         public virtual string AdvicesByTypes() => nameof(this.AdvicesByTypes);
 
+        [AdviceTypes(typeof(LoggingValidationBundle))]
+        public virtual string AdvicesByTypeBundle() => nameof(this.AdvicesByTypeBundle);
+
         [LoggingAdvice]
         protected virtual T Protected<T>(T value) => value;
     }
 
-    public class Derived : Base, ISimple
+    public class Derived : Base
     {
-        private int count = 0;
+        private int count;
 
         [LoggingAdvice]
         public override IContract OneAdvice(IContract a, double y)
@@ -397,7 +408,7 @@ namespace Sidekicknet.Aspect.Test
 
         public static IList<(DateTime timestamp, string message)> Log { get; } = new List<(DateTime, string)>();
 
-        public string? Context { get; set; } = default;
+        public string? Context { get; set; }
 
         public override void Apply(IInvocationInfo invocation)
         {
@@ -439,8 +450,9 @@ namespace Sidekicknet.Aspect.Test
         public override void Apply(IInvocationInfo invocation)
         {
             var targetType = invocation.Target.GetType().BaseType!;
-            if (invocation.Target is Base @base
-                && invocation.Method == targetType.GetMethod(nameof(Base.AdvicesByTypes)))
+            if (invocation.Target is Base
+                && (invocation.Method == targetType.GetMethod(nameof(Base.AdvicesByTypes))
+                    || invocation.Method == targetType.GetMethod(nameof(Base.AdvicesByTypeBundle))))
             {
                 Timestamp = DateTime.UtcNow;
                 Validated = true;
@@ -523,6 +535,14 @@ namespace Sidekicknet.Aspect.Test
     {
         public DoubleLoggingAttribute()
             : base(new LoggingAdviceAttribute(), new LoggingAdviceAttribute() { Context = "2nd" })
+        {
+        }
+    }
+
+    internal class LoggingValidationBundle : AdviceTypeBundle
+    {
+        public LoggingValidationBundle()
+            : base(typeof(LoggingAdviceAttribute), typeof(ValidationAdviceAttribute))
         {
         }
     }
