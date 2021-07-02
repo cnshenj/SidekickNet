@@ -6,12 +6,11 @@ namespace SidekickNet.Utilities.Test
 {
     public class CollectionTest
     {
-
         [Fact]
         public void Create_Partitions_From_Enumerable()
         {
             var source = Enumerable.Range(1, 10);
-            var size = 3;
+            const int size = 3;
             var partitions = source.ToPartitions(size);
 
             // All partitions, except the last one should have exactly 'size' number of elements

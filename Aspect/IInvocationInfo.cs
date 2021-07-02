@@ -43,7 +43,7 @@ namespace SidekickNet.Aspect
         /// <summary>Gets or sets the exception encountered during invocation.</summary>
         Exception? Exception { get; set; }
 
-        /// <summary>Gets additional user-defined information about the invocaiton.</summary>
+        /// <summary>Gets additional user-defined information about the invocation.</summary>
         IDictionary<string, object> Data { get; }
 
         /// <summary>Initializes the context before awaiting an asynchronous task.</summary>

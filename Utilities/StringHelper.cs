@@ -75,10 +75,7 @@ namespace SidekickNet.Utilities
                 throw new ArgumentNullException(nameof(values));
             }
 
-            if (expressionRegex == null)
-            {
-                expressionRegex = DefaultInterpolationRegex;
-            }
+            expressionRegex ??= DefaultInterpolationRegex;
 
             var builder = new StringBuilder();
             var substituted = new List<string>();

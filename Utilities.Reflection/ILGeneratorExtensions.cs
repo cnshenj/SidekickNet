@@ -38,7 +38,8 @@ namespace SidekickNet.Utilities.Reflection
         };
 
         private static readonly MethodInfo GetTypeFromHandleMethod =
-            typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle), BindingFlags.Static | BindingFlags.Public);
+            typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle), BindingFlags.Static | BindingFlags.Public)
+            ?? throw new InvalidOperationException($"Method {nameof(Type)}.{nameof(Type.GetTypeFromHandle)} not found.");
 
         /// <summary>
         /// Emits the instruction to load a <see cref="int"/> value.

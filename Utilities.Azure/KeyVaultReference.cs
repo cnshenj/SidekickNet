@@ -22,7 +22,7 @@ namespace SidekickNet.Utilities.Azure
         /// <param name="vaultName">The Key Vault DNS name.</param>
         /// <param name="secretName">The name of the secret that is identified this reference.</param>
         /// <param name="secretVersion">The version of the secret that is identified this reference.</param>
-        protected KeyVaultReference(string vaultName, string secretName, string? secretVersion = default)
+        private KeyVaultReference(string vaultName, string secretName, string? secretVersion = default)
         {
             this.VaultName = vaultName;
             this.SecretName = secretName;
@@ -48,7 +48,7 @@ namespace SidekickNet.Utilities.Azure
         /// </returns>
         public static KeyVaultReference? TryParse(string referenceString)
         {
-            var match = ReferenceRegex.Match(referenceString ?? string.Empty);
+            var match = ReferenceRegex.Match(referenceString);
             if (!match.Success)
             {
                 return null;

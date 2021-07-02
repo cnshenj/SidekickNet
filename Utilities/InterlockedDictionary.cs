@@ -56,7 +56,7 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             // Designed for more frequent read operations than write operations,
@@ -94,7 +94,7 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             // Designed for more frequent read operations than write operations,
@@ -133,7 +133,7 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             using var @lock = this.lockFactory.GetLock(key);
@@ -165,7 +165,7 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             using var @lock = this.lockFactory.GetLock(key);
@@ -192,7 +192,7 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             using var @lock = this.lockFactory.GetLock(key);
@@ -220,12 +220,12 @@ namespace SidekickNet.Utilities
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             using var @lock = this.lockFactory.GetLock(key);
             var found = this.TryGetValue(key, out value);
-            return found ? this.Remove(key) : false;
+            return found && this.Remove(key);
         }
     }
 }

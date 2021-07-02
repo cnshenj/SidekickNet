@@ -64,10 +64,10 @@ namespace SidekickNet.Utilities.AspNetCore
                 for (var i = 0; i < builder.Sources.Count; ++i)
                 {
                     var source = builder.Sources[i];
-                    if (beforeSourceType.IsAssignableFrom(source.GetType()))
+                    if (beforeSourceType.IsInstanceOfType(source))
                     {
                         var yamlSource = new YamlConfigurationSource();
-                        configureSource?.Invoke(yamlSource);
+                        configureSource(yamlSource);
                         builder.Sources.Insert(i, yamlSource);
                         return builder;
                     }

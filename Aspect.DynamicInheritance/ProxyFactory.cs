@@ -19,18 +19,27 @@ namespace SidekickNet.Aspect.DynamicInheritance
     {
         // Creates closed generic methods from definition
         private static readonly MethodInfo MakeGenericMethodMethod =
-            typeof(MethodInfo).GetMethod(nameof(MethodInfo.MakeGenericMethod), BindingFlags.Instance | BindingFlags.Public);
+            typeof(MethodInfo).GetMethod(
+                nameof(MethodInfo.MakeGenericMethod),
+                BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new InvalidOperationException($"Method {nameof(MethodInfo)}.{nameof(MethodInfo.MakeGenericMethod)} not found.");
 
         // Creates a new InvocationInfo object.
         private static readonly ConstructorInfo InvocationInfoConstructor = typeof(InvocationInfo).GetConstructors()[0];
 
         // Process aspects that are specific to an invocation.
         private static readonly MethodInfo AspectProcessMethod =
-            typeof(AspectProcessor).GetMethod(nameof(AspectProcessor.Process), BindingFlags.Static | BindingFlags.Public);
+            typeof(AspectProcessor).GetMethod(
+                nameof(AspectProcessor.Process),
+                BindingFlags.Static | BindingFlags.Public)
+            ?? throw new InvalidOperationException($"Method {nameof(AspectProcessor)}.{nameof(AspectProcessor.Process)} not found.");
 
         // The property of return value of an invocation.
         private static readonly PropertyInfo ReturnValueProperty =
-            typeof(IInvocationInfo).GetProperty(nameof(IInvocationInfo.ReturnValue), BindingFlags.Instance | BindingFlags.Public);
+            typeof(IInvocationInfo).GetProperty(
+                nameof(IInvocationInfo.ReturnValue),
+                BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new InvalidOperationException($"Property {nameof(IInvocationInfo)}.{nameof(IInvocationInfo.ReturnValue)} not found.");
 
         private readonly AssemblyBuilder assemblyBuilder;
 
@@ -54,7 +63,7 @@ namespace SidekickNet.Aspect.DynamicInheritance
         /// <summary>
         /// Gets a dynamic proxy type for the specified type.
         /// </summary>
-        /// <param name="type">The type to get dyanmic proxy for.</param>
+        /// <param name="type">The type to get dynamic proxy for.</param>
         /// <returns>The dynamic proxy for the specified type.</returns>
         public Type GetProxyType(Type type)
         {
@@ -223,7 +232,7 @@ namespace SidekickNet.Aspect.DynamicInheritance
             return methodBuilder;
         }
 
-        // The signature for the proxy method and the executor method - exactly same as the origianl method
+        // The signature for the proxy method and the executor method - exactly same as the original method
         // Both the proxy method and the executor method have the same signature as the original method
         // The proxy method overrides the original method to add pre-processing and post-processing
         // The executor method executes the original method properly, even when the original method is virtual
@@ -383,10 +392,12 @@ namespace SidekickNet.Aspect.DynamicInheritance
 
             foreach (var (method, data) in buildingData)
             {
-                var field = proxyType.GetField(data.MethodFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                var field = proxyType.GetField(data.MethodFieldName, BindingFlags.Static | BindingFlags.NonPublic)
+                    ?? throw new InvalidOperationException($"Field {data.MethodFieldName} not found.");
                 field.SetValue(null, method);
 
-                field = proxyType.GetField(data.ExecutorFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                field = proxyType.GetField(data.ExecutorFieldName, BindingFlags.Static | BindingFlags.NonPublic)
+                    ?? throw new InvalidOperationException($"Field {data.ExecutorFieldName} not found.");
                 var executor = proxyType.GetMethod(data.ExecutorName, BindingFlags.Instance | BindingFlags.NonPublic);
                 field.SetValue(null, executor);
             }
@@ -418,11 +429,11 @@ namespace SidekickNet.Aspect.DynamicInheritance
                 this.ExecutorFieldName = executorFieldName;
             }
 
-            public string MethodFieldName { get; set; }
+            public string MethodFieldName { get; private set; }
 
-            public string ExecutorName { get; set; }
+            public string ExecutorName { get; private set; }
 
-            public string ExecutorFieldName { get; set; }
+            public string ExecutorFieldName { get; private set; }
         }
     }
 }

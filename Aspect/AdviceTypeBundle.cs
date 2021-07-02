@@ -17,7 +17,7 @@ namespace SidekickNet.Aspect
         /// Initializes a new instance of the <see cref="AdviceTypeBundle"/> class.
         /// </summary>
         /// <param name="adviceTypes">Types of advices.</param>
-        public AdviceTypeBundle(params Type[] adviceTypes)
+        protected AdviceTypeBundle(params Type[] adviceTypes)
         {
             if (adviceTypes.Length == 0)
             {

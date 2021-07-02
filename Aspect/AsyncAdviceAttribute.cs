@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SidekickNet.Aspect
 {
     /// <summary>
-    /// An advice that can be applied asynchrounously.
+    /// An advice that can be applied asynchronously.
     /// </summary>
     public abstract class AsyncAdviceAttribute : AdviceAttribute
     {
@@ -23,7 +23,7 @@ namespace SidekickNet.Aspect
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncAdviceAttribute"/> class.
         /// </summary>
-        public AsyncAdviceAttribute()
+        protected AsyncAdviceAttribute()
         {
             var methods = this.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
             this.applyMethodDefinition = methods.First(m => m.Name == nameof(this.ApplyAsync) && m.IsGenericMethodDefinition);

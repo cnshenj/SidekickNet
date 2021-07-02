@@ -16,8 +16,8 @@ namespace SidekickNet.Aspect
     /// </summary>
     public static class AspectProcessor
     {
-        private static readonly ConcurrentDictionary<Type, PropertyInfo> ProxyMemberMappings =
-            new ConcurrentDictionary<Type, PropertyInfo>();
+        private static readonly ConcurrentDictionary<Type, PropertyInfo?> ProxyMemberMappings =
+            new ConcurrentDictionary<Type, PropertyInfo?>();
 
         private static readonly ConcurrentDictionary<MethodInfo, IAdvice?> AdviceMappings =
             new ConcurrentDictionary<MethodInfo, IAdvice?>();
@@ -69,7 +69,7 @@ namespace SidekickNet.Aspect
             method.GetCustomAttributes<AdviceAttribute>(false).Any()
                 || method.GetCustomAttribute<AdviceTypesAttribute>(false) != null;
 
-        private static PropertyInfo GetProxyMember(this Type type)
+        private static PropertyInfo? GetProxyMember(this Type type)
         {
             return type
                 .GetProperties(BindingFlags.Instance)

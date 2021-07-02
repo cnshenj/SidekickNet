@@ -47,7 +47,6 @@ namespace SidekickNet.Utilities.Azure
                 throw new FormatException("Invalid key vault reference.");
             }
 
-            var secretClient = this.secretClients.GetOrAdd(reference.VaultName, this.CreateSecretClient);
             return this.GetSecretAsync(reference);
         }
 
@@ -93,7 +92,7 @@ namespace SidekickNet.Utilities.Azure
 
             var secretClient = this.secretClients.GetOrAdd(
                 vaultName,
-                vaultName => new SecretClient(new Uri(vaultName), this.tokenCredential));
+                this.CreateSecretClient);
             var response = await secretClient.GetSecretAsync(secretName, secretVersion).ConfigureAwait(false);
             if (response == null)
             {

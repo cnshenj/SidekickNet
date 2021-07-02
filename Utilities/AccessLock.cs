@@ -20,7 +20,7 @@ namespace SidekickNet.Utilities
 
         private readonly SemaphoreSlim semaphore;
 
-        private bool disposed = false;
+        private bool disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccessLock"/> class.
