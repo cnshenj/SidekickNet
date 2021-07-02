@@ -89,7 +89,7 @@ namespace SidekickNet.Utilities.Test
             Assert.Equal(guid, Convert.ToType<Guid>(s));
 
             var now = DateTime.Now;
-            Assert.Equal(now.ToString(CultureInfo.InvariantCulture), Convert.ToType<string>(now));
+            Assert.Equal(now.ToString(), Convert.ToType<string>(now));
         }
 
         [Fact]
