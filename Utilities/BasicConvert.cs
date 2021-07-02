@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -45,7 +46,7 @@ namespace SidekickNet.Utilities
             }
 
             // Last condition will never be reached, needed to make nullable check happy
-            if (value == null
+            if (value is null
                 || value is DBNull
                 || (value is string stringValue && string.IsNullOrWhiteSpace(stringValue))
                 || valueType == null)
@@ -81,9 +82,15 @@ namespace SidekickNet.Utilities
         /// <returns>
         /// An object whose type is <typeparamref name="TValue"/> and whose value is equivalent to <paramref name="value"/>.
         /// </returns>
-#pragma warning disable CS8603 // Value can only be null when target type is nullable.
+#if NETSTANDARD2_0
+    #pragma warning disable CS8603 // Value can only be null when target type is nullable.
+#else
+        [return: MaybeNull]
+#endif
         public static TValue ToType<TValue>(object? value) => (TValue)ToType(value, typeof(TValue));
-#pragma warning restore CS8603 // Possible null reference return.
+#if NETSTANDARD2_0
+    #pragma warning restore CS8603 // Possible null reference return.
+#endif
 
         private class BasicTypeInfo
         {
@@ -170,6 +177,7 @@ namespace SidekickNet.Utilities
 
                 try
                 {
+                    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                     System.Convert.ChangeType(sourceValue, targetType);
                     this.canChangeType = true;
                 }

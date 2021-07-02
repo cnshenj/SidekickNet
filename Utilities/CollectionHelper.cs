@@ -3,9 +3,9 @@
 // </copyright>
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SidekickNet.Utilities
@@ -37,12 +37,9 @@ namespace SidekickNet.Utilities
         /// <param name="sequence">The sequence whose elements should be added to the <see cref="ICollection{T}"/>.</param>
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> sequence)
         {
-            if (sequence != null)
+            foreach (var element in sequence)
             {
-                foreach (var element in sequence)
-                {
-                    collection.Add(element);
-                }
+                collection.Add(element);
             }
         }
 
@@ -71,12 +68,19 @@ namespace SidekickNet.Utilities
         /// <param name="dictionary">The dictionary that contains elements.</param>
         /// <param name="key">The key of the element to get.</param>
         /// <returns>The value of the element with the specified key, or default value if the key doesn't exist.</returns>
+#if !NETSTANDARD2_0
+        [return: MaybeNull]
+#endif
         public static TValue AtOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
             where TValue : notnull
         {
-#pragma warning disable CS8603 // Cannot use MaybeNullAttribute because it is only available in .NET Standard 2.1 or later
+#if NETSTANDARD2_0
+    #pragma warning disable CS8603 // MaybeNullAttribute only available in .NET Standard 2.1 or later
+#endif
             return dictionary.ContainsKey(key) ? dictionary[key] : default;
-#pragma warning restore CS8603 // Possible null reference return.
+#if NETSTANDARD2_0
+    #pragma warning restore CS8603 // Possible null reference return.
+#endif
         }
 
         /// <summary>
@@ -114,12 +118,19 @@ namespace SidekickNet.Utilities
         /// <param name="collection">The dictionary that contains elements.</param>
         /// <param name="key">The key of the element to get.</param>
         /// <returns>The value of the element with the specified key, or default value if the key doesn't exist.</returns>
+#if !NETSTANDARD2_0
+        [return: MaybeNull]
+#endif
         public static TItem AtOrDefault<TKey, TItem>(this KeyedCollection<TKey, TItem> collection, TKey key)
             where TItem : notnull
         {
-#pragma warning disable CS8603 // Cannot use MaybeNullAttribute because it is only available in .NET Standard 2.1 or later
+#if NETSTANDARD2_0
+    #pragma warning disable CS8603 // MaybeNullAttribute only available in .NET Standard 2.1 or later
+#endif
             return collection.Contains(key) ? collection[key] : default;
-#pragma warning restore CS8603 // Possible null reference return.
+#if NETSTANDARD2_0
+    #pragma warning restore CS8603 // Possible null reference return.
+#endif
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -52,6 +53,9 @@ namespace SidekickNet.Utilities
         /// <typeparam name="T">The type of the object to convert to and return.</typeparam>
         /// <param name="text">The string representation of a value.</param>
         /// <returns>The object extracted from the given string representation.</returns>
+#if !NETSTANDARD2_0
+        [return: MaybeNull]
+#endif
         T Deserialize<T>(string text);
 
         /// <summary>

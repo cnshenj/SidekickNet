@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -73,9 +74,15 @@ namespace SidekickNet.Utilities.Json
         }
 
         /// <inheritdoc/>
-#pragma warning disable CS8603 // Cannot use MaybeNullAttribute because it is only available in .NET Standard 2.1 or later
+#if NETSTANDARD2_0
+    #pragma warning disable CS8603 // Value can only be null when target type is nullable.
+#else
+        [return: MaybeNull]
+#endif
         public T Deserialize<T>(string text) => (T)this.Deserialize(text, typeof(T));
-#pragma warning restore CS8603 // Possible null reference return.
+#if NETSTANDARD2_0
+    #pragma warning restore CS8603 // Possible null reference return.
+#endif
 
         /// <inheritdoc/>
         public ValueTask<object?> DeserializeAsync(Stream stream, Type? type = default)
@@ -89,7 +96,7 @@ namespace SidekickNet.Utilities.Json
         public async ValueTask<T> DeserializeAsync<T>(Stream stream)
         {
             var result = await this.DeserializeAsync(stream, typeof(T));
-#pragma warning disable CS8603 // Cannot use MaybeNullAttribute because it is only available in .NET Standard 2.1 or later
+#pragma warning disable CS8603 // https://github.com/dotnet/csharplang/discussions/4231
             return (T)result;
 #pragma warning restore CS8603 // Possible null reference return.
         }
