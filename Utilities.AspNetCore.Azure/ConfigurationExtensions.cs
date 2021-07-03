@@ -44,7 +44,7 @@ namespace SidekickNet.Utilities.AspNetCore.Azure
             var resolved = new Dictionary<string, string>();
             foreach (var pair in config.AsEnumerable())
             {
-                var keyVaultReference = KeyVaultReference.TryParse(pair.Value);
+                var keyVaultReference = KeyVaultReference.TryParse(pair.Value ?? string.Empty);
                 if (keyVaultReference != null)
                 {
                     resolved[pair.Key] = keyVaultHelper!.GetSecretAsync(keyVaultReference).Result;
