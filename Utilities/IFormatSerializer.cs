@@ -53,10 +53,7 @@ namespace SidekickNet.Utilities
         /// <typeparam name="T">The type of the object to convert to and return.</typeparam>
         /// <param name="text">The string representation of a value.</param>
         /// <returns>The object extracted from the given string representation.</returns>
-#if !NETSTANDARD2_0
-        [return: MaybeNull]
-#endif
-        T Deserialize<T>(string text);
+        T? Deserialize<T>(string text);
 
         /// <summary>
         /// Reads a serialized value from a stream into an instance of a specified type.
@@ -64,6 +61,6 @@ namespace SidekickNet.Utilities
         /// <typeparam name="T">The type of the object to convert to and return.</typeparam>
         /// <param name="stream">The stream containing the serialized value.</param>
         /// <returns>The object extracted from the stream.</returns>
-        ValueTask<T> DeserializeAsync<T>(Stream stream);
+        ValueTask<T?> DeserializeAsync<T>(Stream stream);
     }
 }

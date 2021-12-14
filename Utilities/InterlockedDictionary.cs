@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace SidekickNet.Utilities
@@ -216,7 +217,11 @@ namespace SidekickNet.Utilities
         /// or the default value of the TValue type if key does not exist.
         /// </param>
         /// <returns><c>true</c> if the object was removed successfully; otherwise, <c>false</c>.</returns>
+#if NETSTANDARD2_0
         public bool TryRemove(TKey key, out TValue value)
+#else
+        public bool TryRemove(TKey key, [MaybeNullWhen(false)] out TValue value)
+#endif
         {
             if (key == null)
             {

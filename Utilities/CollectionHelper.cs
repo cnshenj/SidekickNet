@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SidekickNet.Utilities
@@ -43,6 +42,7 @@ namespace SidekickNet.Utilities
             }
         }
 
+#if !NET6_0_OR_GREATER // DistinctBy already provided by .NET 6 and above
         /// <summary>
         /// Returns distinct elements from a sequence, using a calculated key.
         /// </summary>
@@ -54,11 +54,12 @@ namespace SidekickNet.Utilities
         /// <returns>The distinct elements from the specified sequence.</returns>
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
             this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector,
+            Func<TSource?, TKey> keySelector,
             IEqualityComparer<TKey>? keyComparer = default)
         {
             return source.Distinct(new DelegateComparer<TSource, TKey>(keySelector, keyComparer));
         }
+#endif
 
         /// <summary>
         /// Gets the element with the specified key, or default value if the key doesn't exist.
@@ -68,19 +69,9 @@ namespace SidekickNet.Utilities
         /// <param name="dictionary">The dictionary that contains elements.</param>
         /// <param name="key">The key of the element to get.</param>
         /// <returns>The value of the element with the specified key, or default value if the key doesn't exist.</returns>
-#if !NETSTANDARD2_0
-        [return: MaybeNull]
-#endif
-        public static TValue AtOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-            where TValue : notnull
+        public static TValue? AtOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-#if NETSTANDARD2_0
-    #pragma warning disable CS8603 // MaybeNullAttribute only available in .NET Standard 2.1 or later
-#endif
             return dictionary.ContainsKey(key) ? dictionary[key] : default;
-#if NETSTANDARD2_0
-    #pragma warning restore CS8603 // Possible null reference return.
-#endif
         }
 
         /// <summary>
@@ -118,19 +109,10 @@ namespace SidekickNet.Utilities
         /// <param name="collection">The dictionary that contains elements.</param>
         /// <param name="key">The key of the element to get.</param>
         /// <returns>The value of the element with the specified key, or default value if the key doesn't exist.</returns>
-#if !NETSTANDARD2_0
-        [return: MaybeNull]
-#endif
-        public static TItem AtOrDefault<TKey, TItem>(this KeyedCollection<TKey, TItem> collection, TKey key)
-            where TItem : notnull
+        public static TItem? AtOrDefault<TKey, TItem>(this KeyedCollection<TKey, TItem> collection, TKey key)
+            where TKey : notnull
         {
-#if NETSTANDARD2_0
-    #pragma warning disable CS8603 // MaybeNullAttribute only available in .NET Standard 2.1 or later
-#endif
             return collection.Contains(key) ? collection[key] : default;
-#if NETSTANDARD2_0
-    #pragma warning restore CS8603 // Possible null reference return.
-#endif
         }
 
         /// <summary>

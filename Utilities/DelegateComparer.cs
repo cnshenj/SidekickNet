@@ -12,9 +12,10 @@ namespace SidekickNet.Utilities
     /// </summary>
     /// <typeparam name="T">The type of the parameter of the delegate.</typeparam>
     /// <typeparam name="TResult">The type of the return value of the delegate.</typeparam>
-    public class DelegateComparer<T, TResult> : IEqualityComparer<T>
+    public class DelegateComparer<T, TResult>
+        : IEqualityComparer<T>
     {
-        private readonly Func<T, TResult> @delegate;
+        private readonly Func<T?, TResult> @delegate;
 
         private readonly IEqualityComparer<TResult> comparer;
 
@@ -23,14 +24,14 @@ namespace SidekickNet.Utilities
         /// </summary>
         /// <param name="delegate">The delegate that return values.</param>
         /// <param name="comparer">Compares objects for equality.</param>
-        public DelegateComparer(Func<T, TResult> @delegate, IEqualityComparer<TResult>? comparer = default)
+        public DelegateComparer(Func<T?, TResult> @delegate, IEqualityComparer<TResult>? comparer = default)
         {
             this.@delegate = @delegate;
             this.comparer = comparer ?? EqualityComparer<TResult>.Default;
         }
 
         /// <inheritdoc/>
-        public bool Equals(T x, T y)
+        public bool Equals(T? x, T? y)
         {
             return this.comparer.Equals(this.@delegate(x), this.@delegate(y));
         }
@@ -38,7 +39,8 @@ namespace SidekickNet.Utilities
         /// <inheritdoc/>
         public int GetHashCode(T obj)
         {
-            return this.comparer.GetHashCode(this.@delegate(obj));
+            var value = this.@delegate(obj);
+            return value is null ? 0 : this.comparer.GetHashCode(value);
         }
     }
 }

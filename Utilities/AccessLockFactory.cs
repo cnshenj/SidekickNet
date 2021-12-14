@@ -13,6 +13,7 @@ namespace SidekickNet.Utilities
     /// </summary>
     /// <typeparam name="TKey">The type of keys.</typeparam>
     public class AccessLockFactory<TKey>
+        where TKey : notnull
     {
         private readonly ConcurrentDictionary<TKey, SemaphoreSlim> semaphores = new ConcurrentDictionary<TKey, SemaphoreSlim>();
 

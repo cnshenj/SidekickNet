@@ -21,10 +21,10 @@ namespace SidekickNet.Utilities
         private static readonly ConverterCollection Converters = new ConverterCollection();
 
         /// <summary>
-        /// Returns an object of a specified basic type whose value is equivalent to a specified object.
+        /// Returns an object of a specified basic type whose value is equivalent to a specified value.
         /// A basic type is either a value type, or <see cref="string"/>, or <see cref="Nullable{T}"/>.
         /// </summary>
-        /// <param name="value">The object to convert.</param>
+        /// <param name="value">The value to convert.</param>
         /// <param name="targetType">The type of object to return.</param>
         /// <returns>
         /// An object whose type is <paramref name="targetType"/> and whose value is equivalent to <paramref name="value"/>.
@@ -46,8 +46,7 @@ namespace SidekickNet.Utilities
             }
 
             // Last condition will never be reached, needed to make nullable check happy
-            if (value is null
-                || value is DBNull
+            if (value is null or DBNull
                 || (value is string stringValue && string.IsNullOrWhiteSpace(stringValue))
                 || valueType == null)
             {
@@ -77,20 +76,12 @@ namespace SidekickNet.Utilities
         /// Returns an object of a specified basic type whose value is equivalent to a specified object.
         /// A basic type is either a value type, or <see cref="string"/>, or <see cref="Nullable{T}"/>.
         /// </summary>
-        /// <typeparam name="TValue">The type of object to return.</typeparam>
+        /// <typeparam name="T">The type of object to return.</typeparam>
         /// <param name="value">The object to convert.</param>
         /// <returns>
-        /// An object whose type is <typeparamref name="TValue"/> and whose value is equivalent to <paramref name="value"/>.
+        /// An object whose type is <typeparamref name="T"/> and whose value is equivalent to <paramref name="value"/>.
         /// </returns>
-#if NETSTANDARD2_0
-    #pragma warning disable CS8603 // Value can only be null when target type is nullable.
-#else
-        [return: MaybeNull]
-#endif
-        public static TValue ToType<TValue>(object? value) => (TValue)ToType(value, typeof(TValue));
-#if NETSTANDARD2_0
-    #pragma warning restore CS8603 // Possible null reference return.
-#endif
+        public static T? ToType<T>(object? value) => (T?)ToType(value, typeof(T));
 
         private class BasicTypeInfo
         {
@@ -106,8 +97,12 @@ namespace SidekickNet.Utilities
                 this.IsBasicType = type.IsValueType || isString || this.IsNullable;
                 if (this.IsNullable)
                 {
-                    this.hasValueProperty = type.GetProperty("HasValue", BindingFlags.Instance | BindingFlags.Public);
-                    this.valueProperty = type.GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
+                    this.hasValueProperty = type.GetProperty(
+                        nameof(Nullable<bool>.HasValue),
+                        BindingFlags.Instance | BindingFlags.Public);
+                    this.valueProperty = type.GetProperty(
+                        nameof(Nullable<bool>.Value),
+                        BindingFlags.Instance | BindingFlags.Public);
                     this.UnderlyingType = type.GetGenericArguments()[0];
                 }
 
@@ -134,7 +129,7 @@ namespace SidekickNet.Utilities
                     throw new NotSupportedException($"Type '{this.Type.FullName}' is not Nullable<T>.");
                 }
 
-                return (bool)this.hasValueProperty.GetValue(obj);
+                return (bool)this.hasValueProperty.GetValue(obj)!;
             }
 
             public object GetUnderlyingValue(object obj)
@@ -144,7 +139,7 @@ namespace SidekickNet.Utilities
                     throw new NotSupportedException($"Type '{this.Type.FullName}' is not Nullable<T>.");
                 }
 
-                return this.valueProperty.GetValue(obj);
+                return this.valueProperty.GetValue(obj)!;
             }
         }
 
@@ -213,7 +208,7 @@ namespace SidekickNet.Utilities
                 }
                 else if (this.parser != null)
                 {
-                    return this.parser.Invoke(null, new[] { obj });
+                    return this.parser.Invoke(null, new[] { obj })!;
                 }
                 else if (this.constructor != null)
                 {
@@ -221,7 +216,7 @@ namespace SidekickNet.Utilities
                 }
                 else if (this.toString != null)
                 {
-                    return this.toString.Invoke(obj, Array.Empty<object>());
+                    return this.toString.Invoke(obj, Array.Empty<object>())!;
                 }
                 else
                 {
