@@ -8,6 +8,7 @@
     <RootNamespace>SidekickNet.Utilities.Json</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageVersion>0.3.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
