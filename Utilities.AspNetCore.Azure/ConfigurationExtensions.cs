@@ -20,8 +20,6 @@ namespace SidekickNet.Utilities.AspNetCore.Azure
     /// </summary>
     public static class ConfigurationExtensions
     {
-        private static KeyVaultHelper? keyVaultHelper;
-
         /// <summary>
         /// Uses Key Vault reference in app configuration.
         /// </summary>
@@ -34,11 +32,29 @@ namespace SidekickNet.Utilities.AspNetCore.Azure
             TokenCredential tokenCredential,
             SecretClientOptions? options = default)
         {
-            keyVaultHelper = new KeyVaultHelper(tokenCredential, options);
-            return hostBuilder.ConfigureAppConfiguration(ResolveKeyVaultReferences);
+            var keyVaultHelper = new KeyVaultHelper(tokenCredential, options);
+            return hostBuilder.ConfigureAppConfiguration(
+                (_, configurationBuilder) => ResolveKeyVaultReferences(configurationBuilder, keyVaultHelper));
         }
 
-        private static void ResolveKeyVaultReferences(HostBuilderContext context, IConfigurationBuilder builder)
+        /// <summary>
+        /// Uses Key Vault reference in the configuration.
+        /// </summary>
+        /// <param name="configurationBuilder">The builder to build the configuration.</param>
+        /// <param name="tokenCredential">A <see cref="TokenCredential"/> used to authenticate requests to the vault.</param>
+        /// <param name="options">Options to configure the management of requests sent to Key Vault.</param>
+        /// <returns>The <paramref name="configurationBuilder"/>.</returns>
+        public static IConfigurationBuilder UseKeyVaultReference(
+            this IConfigurationBuilder configurationBuilder,
+            TokenCredential tokenCredential,
+            SecretClientOptions? options = default)
+        {
+            var keyVaultHelper = new KeyVaultHelper(tokenCredential, options);
+            ResolveKeyVaultReferences(configurationBuilder, keyVaultHelper);
+            return configurationBuilder;
+        }
+
+        private static void ResolveKeyVaultReferences(IConfigurationBuilder builder, KeyVaultHelper keyVaultHelper)
         {
             var config = builder.Build();
             var resolved = new Dictionary<string, string>();
