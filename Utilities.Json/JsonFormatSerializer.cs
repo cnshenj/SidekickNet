@@ -45,7 +45,7 @@ namespace SidekickNet.Utilities.Json
         }
 
         /// <inheritdoc/>
-        public string MediaTypeName { get; } = "application/json";
+        public string MediaTypeName => "application/json";
 
         /// <inheritdoc/>
         public string Serialize(object? value)
@@ -53,6 +53,15 @@ namespace SidekickNet.Utilities.Json
             using var writer = new StringWriter();
             this.serializer.Serialize(writer, value);
             return writer.ToString();
+        }
+
+        /// <inheritdoc />
+        public byte[] SerializeToBytes(object? value)
+        {
+            using var stream = new MemoryStream();
+            using var writer = new StreamWriter(stream);
+            this.serializer.Serialize(writer, value);
+            return stream.ToArray();
         }
 
         /// <inheritdoc/>
@@ -72,8 +81,19 @@ namespace SidekickNet.Utilities.Json
             return this.serializer.Deserialize(reader, type ?? typeof(JToken));
         }
 
+        /// <inheritdoc />
+        public object? Deserialize(byte[] bytes, Type? type = default)
+        {
+            using var stream = new MemoryStream(bytes);
+            using var reader = new StreamReader(stream);
+            return this.serializer.Deserialize(reader, type ?? typeof(JToken));
+        }
+
         /// <inheritdoc/>
         public T? Deserialize<T>(string text) => (T?)this.Deserialize(text, typeof(T));
+
+        /// <inheritdoc />
+        public T? Deserialize<T>(byte[] bytes) => (T?)this.Deserialize(bytes, typeof(T));
 
         /// <inheritdoc/>
         public ValueTask<object?> DeserializeAsync(Stream stream, Type? type = default)

@@ -8,7 +8,6 @@
     <RootNamespace>SidekickNet.Utilities</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PackageVersion>0.3.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,7 +17,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for .NET objects, e.g. strings, collections.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.0</Version>
+    <Version>0.3.2</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>

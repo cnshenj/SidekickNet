@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.AspNetCore.Azure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Json", "Utilities.Json\Utilities.Json.csproj", "{90337DB1-EE63-42EE-82EF-14DDEF05283C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.MessagePack", "Utilities.MessagePack\Utilities.MessagePack.csproj", "{42B963C5-37A9-483B-9F63-30FAD389FF1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{90337DB1-EE63-42EE-82EF-14DDEF05283C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90337DB1-EE63-42EE-82EF-14DDEF05283C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90337DB1-EE63-42EE-82EF-14DDEF05283C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,6 +24,13 @@ namespace SidekickNet.Utilities
         string Serialize(object? value);
 
         /// <summary>
+        /// Converts a value to its bytes representation.
+        /// </summary>
+        /// <param name="value">The value to serialize.</param>
+        /// <returns>The bytes representation of the given object.</returns>
+        byte[] SerializeToBytes(object? value);
+
+        /// <summary>
         /// Converts a value to a serialized stream.
         /// </summary>
         /// <param name="value">The value to serialize.</param>
@@ -32,12 +38,20 @@ namespace SidekickNet.Utilities
         Task<Stream> SerializeAsync(object? value);
 
         /// <summary>
-        /// Parses the text representing a single value into an instance of a specified type.
+        /// Parses the string representing a single value into an instance of a specified type.
         /// </summary>
         /// <param name="text">The string representation of a value.</param>
         /// <param name="type">The type of the object to convert to and return.</param>
         /// <returns>The object extracted from the given string representation.</returns>
         object? Deserialize(string text, Type? type = default);
+
+        /// <summary>
+        /// Parses the bytes representing a single value into an instance of a specified type.
+        /// </summary>
+        /// <param name="bytes">The bytes representation of a value.</param>
+        /// <param name="type">The type of the object to convert to and return.</param>
+        /// <returns>The object extracted from the given string representation.</returns>
+        object? Deserialize(byte[] bytes, Type? type = default);
 
         /// <summary>
         /// Reads a serialized value from a stream into an instance of a specified type.
@@ -48,12 +62,20 @@ namespace SidekickNet.Utilities
         ValueTask<object?> DeserializeAsync(Stream stream, Type? type = default);
 
         /// <summary>
-        /// Parses the text representing a single value into an instance of a specified type.
+        /// Parses the string representing a single value into an instance of a specified type.
         /// </summary>
         /// <typeparam name="T">The type of the object to convert to and return.</typeparam>
         /// <param name="text">The string representation of a value.</param>
         /// <returns>The object extracted from the given string representation.</returns>
         T? Deserialize<T>(string text);
+
+        /// <summary>
+        /// Parses the bytes representing a single value into an instance of a specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to convert to and return.</typeparam>
+        /// <param name="bytes">The bytes representation of a value.</param>
+        /// <returns>The object extracted from the given bytes representation.</returns>
+        T? Deserialize<T>(byte[] bytes);
 
         /// <summary>
         /// Reads a serialized value from a stream into an instance of a specified type.
