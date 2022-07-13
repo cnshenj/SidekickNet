@@ -7,7 +7,6 @@
     <AssemblyName>SidekickNet.Aspect.DynamicInheritance</AssemblyName>
     <RootNamespace>SidekickNet.Aspect.DynamicInheritance</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <PackageVersion>0.3.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,7 +16,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides support for aspect-oriented programming by defining dynamic subtypes as proxies.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.0</Version>
+    <Version>0.3.2</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
