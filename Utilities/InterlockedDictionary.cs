@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
+using SidekickNet.Utilities.Synchronization;
+
 namespace SidekickNet.Utilities
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace SidekickNet.Utilities
     {
         private static readonly IEqualityComparer<TValue> ValueComparer = EqualityComparer<TValue>.Default;
 
-        private readonly AccessLockFactory<TKey> lockFactory;
+        private readonly AccessLockFactory<TKey, Semaphore> lockFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InterlockedDictionary{TKey, TValue}"/> class.
@@ -36,7 +38,7 @@ namespace SidekickNet.Utilities
         /// <param name="lockTimeout">A <see cref="TimeSpan"/> that represents the time period to wait to acquire access locks.</param>
         public InterlockedDictionary(TimeSpan? lockTimeout = default)
         {
-            this.lockFactory = new AccessLockFactory<TKey>(lockTimeout);
+            this.lockFactory = new AccessLockFactory<TKey, Semaphore>(() => new Semaphore(1, 1), lockTimeout);
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace SidekickNet.Utilities
             // so check for key without lock first to improve read performance
             if (!this.ContainsKey(key))
             {
-                using var @lock = this.lockFactory.GetLock(key);
+                await using var @lock = await this.lockFactory.GetLockAsync(key);
 
                 // Check one more time in case another thread has already obtained lock and added the key
                 if (!this.ContainsKey(key))
