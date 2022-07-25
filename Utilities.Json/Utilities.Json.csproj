@@ -17,7 +17,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for JSON.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.3</Version>
+    <Version>0.3.4</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
