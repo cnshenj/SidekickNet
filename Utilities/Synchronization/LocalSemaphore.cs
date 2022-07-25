@@ -1,38 +1,38 @@
-﻿// <copyright file="Semaphore.cs" company="Zhang Shen">
+﻿// <copyright file="LocalSemaphore.cs" company="Zhang Shen">
 // Copyright (c) Zhang Shen. All rights reserved.
 // </copyright>
-
-using System.Threading;
 
 namespace SidekickNet.Utilities.Synchronization;
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Synchronization primitive using <see cref="System.Threading.SemaphoreSlim"/>.
+/// Synchronization primitive using <see cref="SemaphoreSlim"/>.
+/// It can only be used for synchronization on a local machine.
 /// </summary>
-public class Semaphore : ISynchronizationPrimitive
+public class LocalSemaphore : ISynchronizationPrimitive
 {
     private readonly SemaphoreSlim semaphoreSlim;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Semaphore"/> class, specifying
+    /// Initializes a new instance of the <see cref="LocalSemaphore"/> class, specifying
     /// the initial and maximum number of requests that can be granted concurrently.
     /// </summary>
     /// <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
-    public Semaphore(int initialCount)
+    public LocalSemaphore(int initialCount)
     {
         this.semaphoreSlim = new SemaphoreSlim(initialCount);
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Semaphore"/> class, specifying
+    /// Initializes a new instance of the <see cref="LocalSemaphore"/> class, specifying
     /// the initial and maximum number of requests that can be granted concurrently.
     /// </summary>
     /// <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
     /// <param name="maxCount">The maximum number of requests for the semaphore that can be granted concurrently.</param>
-    public Semaphore(int initialCount, int maxCount)
+    public LocalSemaphore(int initialCount, int maxCount)
     {
         this.semaphoreSlim = new SemaphoreSlim(initialCount, maxCount);
     }

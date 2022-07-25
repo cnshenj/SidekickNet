@@ -12,23 +12,21 @@ namespace SidekickNet.Utilities.Synchronization
     /// Provides a mechanism that synchronizes access to keys.
     /// </summary>
     /// <typeparam name="TKey">The type of keys.</typeparam>
-    /// <typeparam name="TPrimitive">The type of the synchronization primitive.</typeparam>
-    public class AccessLockFactory<TKey, TPrimitive>
+    public class AccessLockFactory<TKey>
         where TKey : notnull
-        where TPrimitive : ISynchronizationPrimitive
     {
-        private readonly ConcurrentDictionary<TKey, TPrimitive> primitives = new();
+        private readonly ConcurrentDictionary<TKey, ISynchronizationPrimitive> primitives = new();
 
-        private readonly Func<TPrimitive> primitiveFactory;
+        private readonly Func<ISynchronizationPrimitive> primitiveFactory;
 
         private readonly TimeSpan timeout;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccessLockFactory{TKey, TPrimitive}"/> class.
+        /// Initializes a new instance of the <see cref="AccessLockFactory{TKey}"/> class.
         /// </summary>
         /// <param name="primitiveFactory">The function that generate synchronization primitives.</param>
         /// <param name="timeout">A <see cref="TimeSpan"/> that represents the default time period to wait to acquire access locks.</param>
-        public AccessLockFactory(Func<TPrimitive> primitiveFactory, TimeSpan? timeout = default)
+        public AccessLockFactory(Func<ISynchronizationPrimitive> primitiveFactory, TimeSpan? timeout = default)
         {
             this.primitiveFactory = primitiveFactory ?? throw new ArgumentNullException(nameof(primitiveFactory));
             this.timeout = timeout ?? AccessLock.Indefinite;

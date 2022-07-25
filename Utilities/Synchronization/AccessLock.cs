@@ -9,14 +9,19 @@ namespace SidekickNet.Utilities.Synchronization
 {
     /// <summary>
     /// Provides a mechanism that synchronizes access to resources.
+    /// The lock will be automatically released when disposed synchronously or asynchronously.
     /// </summary>
     public class AccessLock : IDisposable, IAsyncDisposable
     {
         /// <summary>A <see cref="TimeSpan"/> to test lock state and return immediately.</summary>
         public static readonly TimeSpan Immediate = TimeSpan.Zero;
 
-        /// <summary>A <see cref="TimeSpan"/> to wait indefinitely for lock acquisition.</summary>
-        public static readonly TimeSpan Indefinite = TimeSpan.FromMilliseconds(-1);
+        /// <summary>
+        /// A <see cref="TimeSpan"/> to wait indefinitely for lock acquisition.
+        /// Technically it should -1 ms.
+        /// In reality, 10 days can be considered indefinite for locking purpose, and is friendly to calculation.
+        /// </summary>
+        public static readonly TimeSpan Indefinite = TimeSpan.FromDays(10);
 
         private bool disposed;
 

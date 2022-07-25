@@ -30,7 +30,7 @@ namespace SidekickNet.Utilities
     {
         private static readonly IEqualityComparer<TValue> ValueComparer = EqualityComparer<TValue>.Default;
 
-        private readonly AccessLockFactory<TKey, Semaphore> lockFactory;
+        private readonly AccessLockFactory<TKey> lockFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InterlockedDictionary{TKey, TValue}"/> class.
@@ -38,7 +38,7 @@ namespace SidekickNet.Utilities
         /// <param name="lockTimeout">A <see cref="TimeSpan"/> that represents the time period to wait to acquire access locks.</param>
         public InterlockedDictionary(TimeSpan? lockTimeout = default)
         {
-            this.lockFactory = new AccessLockFactory<TKey, Semaphore>(() => new Semaphore(1, 1), lockTimeout);
+            this.lockFactory = new AccessLockFactory<TKey>(() => new LocalSemaphore(1, 1), lockTimeout);
         }
 
         /// <summary>
