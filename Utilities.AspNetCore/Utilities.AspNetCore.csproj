@@ -16,7 +16,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for ASP.NET Core.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.4</Version>
+    <Version>0.3.5</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>

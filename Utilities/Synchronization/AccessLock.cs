@@ -71,9 +71,9 @@ namespace SidekickNet.Utilities.Synchronization
         /// A task that will complete with a result of <c>true</c> if the current thread successfully got the access,
         /// otherwise with a result of <c>false</c>.
         /// </returns>
-        public ValueTask<bool> AcquireLockAsync(TimeSpan timeout)
+        public async ValueTask<bool> AcquireLockAsync(TimeSpan timeout)
         {
-            return this.SynchronizationPrimitive.WaitAsync(timeout);
+            return this.Acquired = await this.SynchronizationPrimitive.WaitAsync(timeout);
         }
 
         /// <inheritdoc/>
