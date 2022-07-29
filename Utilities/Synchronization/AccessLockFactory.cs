@@ -17,7 +17,7 @@ namespace SidekickNet.Utilities.Synchronization
     {
         private readonly ConcurrentDictionary<TKey, ISynchronizationPrimitive> primitives = new();
 
-        private readonly Func<ISynchronizationPrimitive> primitiveFactory;
+        private readonly Func<TKey, ISynchronizationPrimitive> primitiveFactory;
 
         private readonly TimeSpan timeout;
 
@@ -26,7 +26,7 @@ namespace SidekickNet.Utilities.Synchronization
         /// </summary>
         /// <param name="primitiveFactory">The function that generate synchronization primitives.</param>
         /// <param name="timeout">A <see cref="TimeSpan"/> that represents the default time period to wait to acquire access locks.</param>
-        public AccessLockFactory(Func<ISynchronizationPrimitive> primitiveFactory, TimeSpan? timeout = default)
+        public AccessLockFactory(Func<TKey, ISynchronizationPrimitive> primitiveFactory, TimeSpan? timeout = default)
         {
             this.primitiveFactory = primitiveFactory ?? throw new ArgumentNullException(nameof(primitiveFactory));
             this.timeout = timeout ?? AccessLock.Indefinite;
@@ -62,7 +62,7 @@ namespace SidekickNet.Utilities.Synchronization
 
         private AccessLock CreateLock(TKey key)
         {
-            var primitive = this.primitives.GetOrAdd(key, _ => this.primitiveFactory());
+            var primitive = this.primitives.GetOrAdd(key, this.primitiveFactory);
             return new AccessLock(primitive);
         }
     }

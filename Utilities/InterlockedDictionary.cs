@@ -38,7 +38,7 @@ namespace SidekickNet.Utilities
         /// <param name="lockTimeout">A <see cref="TimeSpan"/> that represents the time period to wait to acquire access locks.</param>
         public InterlockedDictionary(TimeSpan? lockTimeout = default)
         {
-            this.lockFactory = new AccessLockFactory<TKey>(() => new LocalSemaphore(1, 1), lockTimeout);
+            this.lockFactory = new AccessLockFactory<TKey>(_ => new LocalSemaphore(1, 1), lockTimeout);
         }
 
         /// <summary>
