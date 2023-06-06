@@ -16,7 +16,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides support for aspect-oriented programming using Simple Injector.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.2</Version>
+    <Version>0.3.7</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
