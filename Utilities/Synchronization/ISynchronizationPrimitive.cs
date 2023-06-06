@@ -2,11 +2,11 @@
 // Copyright (c) Zhang Shen. All rights reserved.
 // </copyright>
 
-namespace SidekickNet.Utilities.Synchronization;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+namespace SidekickNet.Utilities.Synchronization;
 
 /// <summary>
 /// .NET has different interfaces for synchronization primitives.

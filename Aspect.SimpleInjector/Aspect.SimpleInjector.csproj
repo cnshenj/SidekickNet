@@ -32,8 +32,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SimpleInjector" Version="5.3.3" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+    <PackageReference Include="SimpleInjector" Version="5.4.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
