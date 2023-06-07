@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SidekickNet.Utilities.Synchronization;
 using Xunit;
 
@@ -29,7 +31,7 @@ namespace SidekickNet.Utilities.Test
             var semaphore = new LocalSemaphore(1, 1);
             {
                 await using var @lock = new AccessLock(semaphore);
-                result = await @lock.AcquireLockAsync(TimeSpan.Zero);
+                result = await @lock.TryAcquireLockAsync(TimeSpan.Zero);
                 Assert.True(result);
 
                 // Can't be acquired again without release
@@ -40,6 +42,121 @@ namespace SidekickNet.Utilities.Test
             // @lock out of scope, semaphore was released and can be acquired again
             result = await semaphore.WaitAsync(TimeSpan.Zero);
             Assert.True(result);
+        }
+
+        [Fact]
+        public void Get_Lock_From_Factory()
+        {
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            using var @lock = factory.GetLock("foobar");
+            Assert.True(@lock.Acquired);
+        }
+
+        [Fact]
+        public async Task Get_Lock_Again_Throw_Exception()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            using var @lock = factory.GetLock(key);
+            await Task.Run(() => Assert.Throws<TimeoutException>(() => factory.GetLock(key, TimeSpan.Zero)));
+        }
+
+        [Fact]
+        public async Task Try_Get_Lock_Again_Not_Acquired()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            using var @lock = factory.GetLock(key);
+            await Task.Run(() =>
+            {
+                using var lockAgain = factory.TryGetLock(key, TimeSpan.Zero);
+                Assert.False(lockAgain.Acquired);
+            });
+        }
+
+        [Fact]
+        public async Task Get_Lock_Again_After_Release()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            Task<DateTime> task;
+            using (var @lock = factory.GetLock(key))
+            {
+                Assert.True(@lock.Acquired);
+                task = Task.Run(() =>
+                {
+                    using var lockAgain = factory.TryGetLock(key);
+                    Assert.True(lockAgain.Acquired);
+                    return DateTime.Now;
+                });
+                Thread.Sleep(100);
+            }
+
+            var releaseTime = DateTime.Now;
+            var lockAgainTime = await task;
+            // Since the release time is not obtained at the exact time when the lock is released,
+            // allow 1 millisecond tolerance when comparing release time and lock time
+            Assert.True(
+                lockAgainTime > releaseTime - TimeSpan.FromMilliseconds(1),
+                $"Access lock must be acquired again after being released. Release time: {releaseTime.Ticks}, Lock again time: {lockAgainTime.Ticks}.");
+        }
+
+        [Fact]
+        public async Task Get_Lock_Async_From_Factory()
+        {
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            await using var @lock = await factory.GetLockAsync("foobar");
+            Assert.True(@lock.Acquired);
+        }
+
+        [Fact]
+        public async Task Get_Lock_Async_Again_Throw_Exception()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            await using var @lock = await factory.GetLockAsync(key);
+            await Task.Run(async () =>
+                await Assert.ThrowsAsync<TimeoutException>(async () => await factory.GetLockAsync(key, TimeSpan.Zero)));
+        }
+
+        [Fact]
+        public async Task Try_Get_Lock_Async_Again_Not_Acquired()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            using var @lock = factory.GetLock(key);
+            await Task.Run(async () =>
+            {
+                await using var lockAgain = await factory.TryGetLockAsync(key, TimeSpan.Zero);
+                Assert.False(lockAgain.Acquired);
+            });
+        }
+
+        [Fact]
+        public async Task Get_Lock_Async_Again_After_Release()
+        {
+            const string key = "foobar";
+            var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
+            Task<DateTime> task;
+            await using (var @lock = await factory.GetLockAsync(key))
+            {
+                Assert.True(@lock.Acquired);
+                task = Task.Run(async () =>
+                {
+                    await using var lockAgain = await factory.TryGetLockAsync(key);
+                    Assert.True(lockAgain.Acquired);
+                    return DateTime.Now;
+                });
+                Thread.Sleep(100);
+            }
+
+            var releaseTime = DateTime.Now;
+            var lockAgainTime = await task;
+            // Since the release time is not obtained at the exact time when the lock is released,
+            // allow 1 millisecond tolerance when comparing release time and lock time
+            Assert.True(
+                lockAgainTime > releaseTime - TimeSpan.FromMilliseconds(1),
+                "Access lock must be acquired again after being released.");
         }
     }
 }

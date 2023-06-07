@@ -46,7 +46,7 @@ namespace SidekickNet.Utilities.Synchronization
         protected ISynchronizationPrimitive SynchronizationPrimitive { get; }
 
         /// <summary>
-        /// Acquires the lock to access the protected resource.
+        /// Tries to acquire the lock to access the protected resource.
         /// </summary>
         /// <param name="timeout">
         /// A <see cref="TimeSpan"/> that represents the number of milliseconds to wait,
@@ -54,13 +54,13 @@ namespace SidekickNet.Utilities.Synchronization
         /// or a <see cref="TimeSpan"/> that represents 0 milliseconds to test the primitive and return immediately.
         /// </param>
         /// <returns><c>true</c> if the current thread successfully entered the SemaphoreSlim; otherwise, <c>false</c>.</returns>
-        public bool AcquireLock(TimeSpan timeout)
+        public bool TryAcquireLock(TimeSpan timeout)
         {
             return this.Acquired = this.SynchronizationPrimitive.Wait(timeout);
         }
 
         /// <summary>
-        /// Asynchronously acquires the lock to access the protected resource.
+        /// Asynchronously tries to acquire the lock to access the protected resource.
         /// </summary>
         /// <param name="timeout">
         /// A <see cref="TimeSpan"/> that represents the number of milliseconds to wait,
@@ -71,7 +71,7 @@ namespace SidekickNet.Utilities.Synchronization
         /// A task that will complete with a result of <c>true</c> if the current thread successfully got the access,
         /// otherwise with a result of <c>false</c>.
         /// </returns>
-        public async ValueTask<bool> AcquireLockAsync(TimeSpan timeout)
+        public async ValueTask<bool> TryAcquireLockAsync(TimeSpan timeout)
         {
             return this.Acquired = await this.SynchronizationPrimitive.WaitAsync(timeout);
         }

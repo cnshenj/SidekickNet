@@ -33,6 +33,22 @@ namespace SidekickNet.Utilities.Synchronization
         }
 
         /// <summary>
+        /// Tries to get a new access lock for the specified key.
+        /// </summary>
+        /// <param name="key">The key to get access lock for.</param>
+        /// <param name="timeout">An optional <see cref="TimeSpan"/> that represents the time period to wait to acquire access locks.</param>
+        /// <returns>
+        /// A new access lock for the specified key.
+        /// The lock may or may not be in acquired state.
+        /// </returns>
+        public AccessLock TryGetLock(TKey key, TimeSpan? timeout = default)
+        {
+            var @lock = this.CreateLock(key);
+            @lock.TryAcquireLock(timeout ?? this.timeout);
+            return @lock;
+        }
+
+        /// <summary>
         /// Gets a new access lock for the specified key.
         /// The lock is guaranteed to be acquired. Or an exception is thrown.
         /// </summary>
@@ -41,8 +57,26 @@ namespace SidekickNet.Utilities.Synchronization
         /// <returns>A new access lock for the specified key.</returns>
         public AccessLock GetLock(TKey key, TimeSpan? timeout = default)
         {
+            var @lock = this.TryGetLock(key, timeout);
+            if (!@lock.Acquired)
+            {
+                throw new TimeoutException("Unable to acquire the access lock within the specified time span.");
+            }
+
+            return @lock;
+        }
+
+        /// <summary>
+        /// Tries to get a new access lock for the specified key.
+        /// The lock is guaranteed to be acquired. Or an exception is thrown.
+        /// </summary>
+        /// <param name="key">The key to get access lock for.</param>
+        /// <param name="timeout">An optional <see cref="TimeSpan"/> that represents the time period to wait to acquire access locks.</param>
+        /// <returns>A new access lock for the specified key.</returns>
+        public async Task<AccessLock> TryGetLockAsync(TKey key, TimeSpan? timeout = default)
+        {
             var @lock = this.CreateLock(key);
-            @lock.AcquireLock(timeout ?? this.timeout);
+            await @lock.TryAcquireLockAsync(timeout ?? this.timeout);
             return @lock;
         }
 
@@ -55,8 +89,12 @@ namespace SidekickNet.Utilities.Synchronization
         /// <returns>A new access lock for the specified key.</returns>
         public async Task<AccessLock> GetLockAsync(TKey key, TimeSpan? timeout = default)
         {
-            var @lock = this.CreateLock(key);
-            await @lock.AcquireLockAsync(timeout ?? this.timeout);
+            var @lock = await this.TryGetLockAsync(key, timeout);
+            if (!@lock.Acquired)
+            {
+                throw new TimeoutException("Unable to acquire the access lock within the specified time span.");
+            }
+
             return @lock;
         }
 
