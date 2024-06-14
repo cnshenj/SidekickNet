@@ -11,7 +11,7 @@ namespace SidekickNet.Utilities.Test
     public class SynchronizationTest
     {
         [Fact]
-        public async void Wait_And_Release_Local_Semaphore()
+        public async Task Wait_And_Release_Local_Semaphore()
         {
             var semaphore = new LocalSemaphore(1, 1);
             var result = await semaphore.WaitAsync(TimeSpan.Zero);
@@ -19,13 +19,13 @@ namespace SidekickNet.Utilities.Test
 
             await semaphore.ReleaseAsync();
 
-            // After release it can be acquired again
+            // After release, it can be acquired again
             result = await semaphore.WaitAsync(TimeSpan.Zero);
             Assert.True(result);
         }
 
         [Fact]
-        public async void Await_Using_AccessLock()
+        public async Task Await_Using_AccessLock()
         {
             bool result;
             var semaphore = new LocalSemaphore(1, 1);
@@ -68,7 +68,7 @@ namespace SidekickNet.Utilities.Test
         {
             const string key = "foobar";
             var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
-            using var @lock = factory.GetLock(key);
+            await using var @lock = await factory.GetLockAsync(key);
             await Task.Run(() =>
             {
                 using var lockAgain = factory.TryGetLock(key, TimeSpan.Zero);
@@ -82,7 +82,7 @@ namespace SidekickNet.Utilities.Test
             const string key = "foobar";
             var factory = new AccessLockFactory<string>(_ => new LocalSemaphore(1, 1));
             Task<DateTime> task;
-            using (var @lock = factory.GetLock(key))
+            await using (var @lock = await factory.GetLockAsync(key))
             {
                 Assert.True(@lock.Acquired);
                 task = Task.Run(() =>

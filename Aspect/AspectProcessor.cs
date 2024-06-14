@@ -16,11 +16,9 @@ namespace SidekickNet.Aspect
     /// </summary>
     public static class AspectProcessor
     {
-        private static readonly ConcurrentDictionary<Type, PropertyInfo?> ProxyMemberMappings =
-            new ConcurrentDictionary<Type, PropertyInfo?>();
+        private static readonly ConcurrentDictionary<Type, PropertyInfo?> ProxyMemberMappings = new();
 
-        private static readonly ConcurrentDictionary<MethodInfo, IAdvice?> AdviceMappings =
-            new ConcurrentDictionary<MethodInfo, IAdvice?>();
+        private static readonly ConcurrentDictionary<MethodInfo, IAdvice?> AdviceMappings = new();
 
         /// <summary>
         /// Processes advices for the specified invocation.

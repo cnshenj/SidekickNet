@@ -411,7 +411,7 @@ namespace SidekickNet.Aspect.DynamicInheritance
             var index = typeName.IndexOf(',');
             if (index > 0)
             {
-                typeName = typeName.Substring(0, index);
+                typeName = typeName[..index];
             }
 
             return GetUniqueName(typeName, this.typeNameConflicts);

@@ -20,8 +20,7 @@ namespace SidekickNet.Aspect
     /// </summary>
     public static class ConstructorResolver
     {
-        private static readonly ConcurrentDictionary<Type, ConstructorInfo> SoleConstructors =
-            new ConcurrentDictionary<Type, ConstructorInfo>();
+        private static readonly ConcurrentDictionary<Type, ConstructorInfo> SoleConstructors = new();
 
         /// <summary>
         /// Gets the only constructor of a type.

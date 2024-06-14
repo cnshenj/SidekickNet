@@ -22,7 +22,7 @@ namespace SidekickNet.Aspect
         bool SwallowExceptions { get; set; }
 
         /// <summary>
-        /// Applies the advice the a target.
+        /// Applies the advice to a target.
         /// </summary>
         /// <param name="invocation">The invocation of the target method.</param>
         void Apply(IInvocationInfo invocation);

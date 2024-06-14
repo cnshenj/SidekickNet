@@ -71,7 +71,7 @@ namespace SidekickNet.Utilities
         /// <returns>The value of the element with the specified key, or default value if the key doesn't exist.</returns>
         public static TValue? AtOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-            return dictionary.ContainsKey(key) ? dictionary[key] : default;
+            return dictionary.TryGetValue(key, out var value) ? value : default;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace SidekickNet.Utilities
         public static TValue? AtOrDefault<TKey, TValue>(this IDictionary<TKey, object> dictionary, TKey key)
             where TValue : struct
         {
-            return dictionary.ContainsKey(key) ? BasicConvert.ToType<TValue>(dictionary[key]) : default;
+            return dictionary.TryGetValue(key, out var value) ? BasicConvert.ToType<TValue>(value) : default;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace SidekickNet.Utilities
         public static TValue? AtOrDefault<TValue>(this IDictionary<string, object> dictionary, string key)
             where TValue : struct
         {
-            return dictionary.ContainsKey(key) ? BasicConvert.ToType<TValue>(dictionary[key]) : default;
+            return dictionary.TryGetValue(key, out var value) ? BasicConvert.ToType<TValue>(value) : default;
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace SidekickNet.Utilities
         /// <returns>A <see cref="ISet{T}"/> that contains unique elements.</returns>
         public static ISet<T> ToSet<T>(this IEnumerable<T> source, IEqualityComparer<T>? comparer = default)
         {
-            return comparer == null ? new HashSet<T>(source) : new HashSet<T>(source, comparer);
+            return comparer == null ? [..source] : new HashSet<T>(source, comparer);
         }
 
         /// <summary>

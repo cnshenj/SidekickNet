@@ -171,7 +171,7 @@ namespace SidekickNet.Utilities
                 throw new ArgumentNullException(nameof(key));
             }
 
-            using var @lock = this.lockFactory.GetLock(key);
+            await using var @lock = await this.lockFactory.GetLockAsync(key);
             var task = this.ContainsKey(key) ? updateValueFactory(key, this[key]) : addValueFactory(key);
             var value = await task.ConfigureAwait(false);
             this[key] = value;

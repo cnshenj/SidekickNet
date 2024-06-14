@@ -57,13 +57,13 @@ namespace SidekickNet.Utilities.AspNetCore.Azure
         private static void ResolveKeyVaultReferences(IConfigurationBuilder builder, KeyVaultHelper keyVaultHelper)
         {
             var config = builder.Build();
-            var resolved = new Dictionary<string, string>();
+            var resolved = new Dictionary<string, string?>();
             foreach (var pair in config.AsEnumerable())
             {
                 var keyVaultReference = KeyVaultReference.TryParse(pair.Value ?? string.Empty);
                 if (keyVaultReference != null)
                 {
-                    resolved[pair.Key] = keyVaultHelper!.GetSecretAsync(keyVaultReference).Result;
+                    resolved[pair.Key] = keyVaultHelper.GetSecretAsync(keyVaultReference).Result;
                 }
             }
 

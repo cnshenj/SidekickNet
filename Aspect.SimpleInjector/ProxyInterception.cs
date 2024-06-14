@@ -43,7 +43,7 @@ namespace SidekickNet.Aspect.SimpleInjector
         /// <param name="createProxyMethod">The method to create proxies.</param>
         public static void Intercept(this Container container, Predicate<Type> predicate, MethodInfo createProxyMethod)
         {
-            container.ExpressionBuilt += (sender, e) =>
+            container.ExpressionBuilt += (_, e) =>
             {
                 if (predicate(e.RegisteredServiceType) || predicate(e.Expression.Type))
                 {
@@ -120,7 +120,7 @@ namespace SidekickNet.Aspect.SimpleInjector
 
         private static object CreateInstance(Expression expression)
         {
-            var creator = Expression.Lambda<Func<object>>(expression, new ParameterExpression[0]).Compile();
+            var creator = Expression.Lambda<Func<object>>(expression, []).Compile();
             return creator();
         }
 

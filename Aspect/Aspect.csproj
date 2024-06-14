@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <AssemblyName>SidekickNet.Aspect</AssemblyName>
     <RootNamespace>SidekickNet.Aspect</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -17,7 +17,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides support for aspect-oriented programming.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>0.3.9</Version>
+    <Version>1.0</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
@@ -29,11 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

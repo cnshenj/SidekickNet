@@ -65,25 +65,34 @@ namespace SidekickNet.Utilities.AspNetCore
         {
             var config = builder.Build();
             var keys = config.AsEnumerable().Select(pair => pair.Key).ToArray();
-            var values = new Dictionary<string, object>();
-            values.AddRange(keys.Select(key => new KeyValuePair<string, object>(key, config[key])));
-            var interpolatedConfig = new Dictionary<string, string>();
+            var values = keys
+                .Select(key => (Key: key, Value: config[key]))
+                .Where(t => t.Value != default)
+                .ToDictionary(t => t.Key, t => (object)t.Value!);
+            var interpolatedConfig = new Dictionary<string, string?>();
             foreach (var key in keys.Where(k => config[k] != null))
             {
+                var seen = new HashSet<string>();
                 var value = config[key];
+                if (value == default)
+                {
+                    continue;
+                }
+
                 while (true)
                 {
                     var interpolatedValue = value.Interpolate(values, out var expressions, ConfigExpressionRegex);
-                    if (expressions == null)
+                    if (expressions == default)
                     {
                         // No substitution happened
                         break;
                     }
 
                     // Repeat interpolation until there is no substitution
-                    if (expressions.Any(e => e.EqualsIgnoreCase(key)))
+                    var cyclicReference = expressions.FirstOrDefault(seen.Contains);
+                    if (cyclicReference != default)
                     {
-                        throw new FormatException($"Cyclic reference in configuration '{key}'.");
+                        throw new FormatException($"Cyclic reference '{cyclicReference}' in configuration '{key}'.");
                     }
 
                     value = interpolatedConfig[key] = interpolatedValue;
@@ -100,7 +109,7 @@ namespace SidekickNet.Utilities.AspNetCore
         {
             var config = builder.Build();
             var keys = config.AsEnumerable().Select(pair => pair.Key).ToArray();
-            var mixins = new Dictionary<string, string>();
+            var mixins = new Dictionary<string, string?>();
 
             foreach (var key in keys)
             {
@@ -110,7 +119,7 @@ namespace SidekickNet.Utilities.AspNetCore
                     continue;
                 }
 
-                var lastSegment = segments[segments.Length - 1];
+                var lastSegment = segments[^1];
                 var match = ConfigExpressionRegex.Match(lastSegment);
                 if (!match.Success)
                 {
@@ -126,10 +135,10 @@ namespace SidekickNet.Utilities.AspNetCore
                 // Prefix includes the separator, e.g. "Foo:"
                 var sourcePrefix = match.Groups["expression"].Value + ConfigurationPath.KeyDelimiter;
                 var sourceKeys = keys.Where(k => k.StartsWith(sourcePrefix, StringComparison.OrdinalIgnoreCase));
-                var targetPrefix = key.Substring(0, key.Length - lastSegment.Length);
+                var targetPrefix = key[..^lastSegment.Length];
                 foreach (var sourceKey in sourceKeys)
                 {
-                    var targetKey = targetPrefix + sourceKey.Substring(sourcePrefix.Length);
+                    var targetKey = targetPrefix + sourceKey[sourcePrefix.Length..];
                     if (config[targetKey] == null)
                     {
                         // Only add mixin if there is no existing value

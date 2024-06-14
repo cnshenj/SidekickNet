@@ -17,8 +17,7 @@ namespace SidekickNet.Aspect
     {
         private readonly MethodInfo applyMethodDefinition;
 
-        private readonly ConcurrentDictionary<Type, MethodInfo> applyMethods =
-            new ConcurrentDictionary<Type, MethodInfo>();
+        private readonly ConcurrentDictionary<Type, MethodInfo> applyMethods = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncAdviceAttribute"/> class.
@@ -54,7 +53,7 @@ namespace SidekickNet.Aspect
         }
 
         /// <summary>
-        /// Let the invocation to proceed and return the return value.
+        /// Let the invocation proceed and return the return value.
         /// </summary>
         /// <typeparam name="T">The type of the return value.</typeparam>
         /// <param name="invocation">The invocation that will proceed.</param>

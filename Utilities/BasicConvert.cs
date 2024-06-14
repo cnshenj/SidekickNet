@@ -216,7 +216,7 @@ namespace SidekickNet.Utilities
                 }
                 else if (this.toString != null)
                 {
-                    return this.toString.Invoke(obj, Array.Empty<object>())!;
+                    return this.toString.Invoke(obj, [])!;
                 }
                 else
                 {
@@ -269,8 +269,7 @@ namespace SidekickNet.Utilities
 
         private class ConverterCollection
         {
-            private readonly ConcurrentDictionary<(Type TargetType, Type SourceType), Converter> dictionary =
-                new ConcurrentDictionary<(Type TargetType, Type SourceType), Converter>();
+            private readonly ConcurrentDictionary<(Type TargetType, Type SourceType), Converter> dictionary = new();
 
             public Converter Get(Type targetType, object sourceValue)
             {

@@ -28,7 +28,7 @@ namespace SidekickNet.Utilities
         /// The default value is <see cref="StringComparison.OrdinalIgnoreCase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the value of the a parameter is equal to the value of the b parameter; otherwise, <c>false</c>.
+        /// <c>true</c> if the value of the parameter is equal to the value of the b parameter; otherwise, <c>false</c>.
         /// </returns>
         public static bool EqualsIgnoreCase(
             this string a,
@@ -62,7 +62,7 @@ namespace SidekickNet.Utilities
         public static string Interpolate(
             this string source,
             IDictionary<string, object> values,
-            out IEnumerable<string>? expressions,
+            out ICollection<string>? expressions,
             Regex? expressionRegex = default)
         {
             if (source == null)
@@ -89,10 +89,10 @@ namespace SidekickNet.Utilities
                 }
 
                 var expression = match.Groups["expression"].Value;
-                if (values.ContainsKey(expression))
+                if (values.TryGetValue(expression, out var value))
                 {
                     var format = $"{{0{match.Groups["alignment"].Value}{match.Groups["format"].Value}}}";
-                    builder.AppendFormat(format, values[expression]);
+                    builder.AppendFormat(format, value);
                     substituted.Add(expression);
                 }
                 else

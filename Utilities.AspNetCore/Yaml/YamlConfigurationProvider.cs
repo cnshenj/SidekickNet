@@ -37,12 +37,12 @@ namespace SidekickNet.Utilities.AspNetCore
             using var reader = new StreamReader(stream);
             var yamlStream = new YamlStream();
             yamlStream.Load(reader);
-            if (!(yamlStream.Documents[0].RootNode is YamlMappingNode rootMapping))
+            if (yamlStream.Documents[0].RootNode is not YamlMappingNode rootMapping)
             {
                 throw new FormatException($"YAML configuration file must contain a root mapping.");
             }
 
-            this.Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            this.Data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
             this.LoadYamlMapping(rootMapping);
         }
 
@@ -89,6 +89,8 @@ namespace SidekickNet.Utilities.AspNetCore
                 case YamlNodeType.Sequence:
                     this.LoadYamlSequence((YamlSequenceNode)node);
                     break;
+                default:
+                    throw new NotSupportedException($"YAML node type '{node.NodeType}' not supported.");
             }
         }
 

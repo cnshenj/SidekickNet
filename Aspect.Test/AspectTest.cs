@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using SidekickNet.Aspect.DynamicInheritance;
@@ -171,12 +172,12 @@ namespace SidekickNet.Aspect.Test
         }
 
         [Fact]
-        public void Async_Advice_Without_Result()
+        public async Task Async_Advice_Without_Result()
         {
             var container = this.Prepare();
             var a = container.GetInstance<IContract>();
             var task = a.DoAsync();
-            task.Wait();
+            await task.WaitAsync(CancellationToken.None);
             var whenDo = a.WhenDo;
             Assert.NotEqual(DateTime.MinValue, AsyncAdvice1Attribute.WhenApply);
             Assert.True(AsyncAdvice1Attribute.WhenApply < whenDo);
@@ -186,11 +187,11 @@ namespace SidekickNet.Aspect.Test
         }
 
         [Fact]
-        public void Async_Advice_With_Result()
+        public async Task Async_Advice_With_Result()
         {
             var container = this.Prepare();
             var a = container.GetInstance<IContract>();
-            var value = a.GetValueAsync().Result;
+            var value = await a.GetValueAsync();
             Assert.NotEqual(DateTime.MinValue, AsyncAdvice1Attribute.WhenApply);
             Assert.True(AsyncAdvice1Attribute.WhenApply < AsyncAdvice2Attribute.WhenApply);
             Assert.Equal(0.5, value);
