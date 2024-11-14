@@ -17,15 +17,20 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides support for aspect-oriented programming.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.0</Version>
+    <Version>1.0.1</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
