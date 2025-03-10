@@ -6,7 +6,7 @@
     <AssemblyName>SidekickNet.Patterns</AssemblyName>
     <RootNamespace>SidekickNet.Patterns</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>

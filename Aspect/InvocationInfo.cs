@@ -66,7 +66,7 @@ namespace SidekickNet.Aspect
         private object DefaultProceed()
         {
             this.ReturnValue = this.Executor.Invoke(this.Target, this.Arguments);
-            return this.ReturnValue;
+            return this.ReturnValue!;
         }
     }
 }

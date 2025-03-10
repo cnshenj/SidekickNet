@@ -184,7 +184,7 @@ namespace SidekickNet.Aspect.DynamicInheritance
             if (returnType != typeof(void))
             {
                 ilGenerator.EmitLoadLocal(invocationInfo);
-                ilGenerator.Emit(OpCodes.Callvirt, ReturnValueProperty.GetMethod); // invocationInfo.ReturnValue
+                ilGenerator.Emit(OpCodes.Callvirt, ReturnValueProperty.GetMethod!); // invocationInfo.ReturnValue
                 if (returnType.IsGenericMethodParameter)
                 {
                     returnType = typeParameterBuilders[returnType.Name];
