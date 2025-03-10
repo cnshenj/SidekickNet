@@ -16,7 +16,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for Azure resources.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
