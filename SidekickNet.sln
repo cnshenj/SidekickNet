@@ -34,6 +34,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Json", "Utilities
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.MessagePack", "Utilities.MessagePack\Utilities.MessagePack.csproj", "{42B963C5-37A9-483B-9F63-30FAD389FF1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Configuration.Yaml", "Utilities.Configuration.Yaml\Utilities.Configuration.Yaml.csproj", "{DB66AB04-8C9A-4081-B6AD-036C8FF37D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Configuration.Processing", "Utilities.Configuration.Processing\Utilities.Configuration.Processing.csproj", "{F624D1C9-8A4B-4FE7-8BAB-698BE994C80A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,14 @@ Global
 		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B963C5-37A9-483B-9F63-30FAD389FF1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB66AB04-8C9A-4081-B6AD-036C8FF37D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB66AB04-8C9A-4081-B6AD-036C8FF37D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB66AB04-8C9A-4081-B6AD-036C8FF37D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB66AB04-8C9A-4081-B6AD-036C8FF37D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F624D1C9-8A4B-4FE7-8BAB-698BE994C80A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F624D1C9-8A4B-4FE7-8BAB-698BE994C80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F624D1C9-8A4B-4FE7-8BAB-698BE994C80A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F624D1C9-8A4B-4FE7-8BAB-698BE994C80A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

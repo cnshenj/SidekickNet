@@ -17,7 +17,7 @@
     <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for .NET objects, e.g. strings, collections.</Description>
     <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.8" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -43,7 +43,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
   </ItemGroup>
 
 </Project>
