@@ -1,38 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <AssemblyName>SidekickNet.Utilities.MessagePack</AssemblyName>
     <RootNamespace>SidekickNet.Utilities.MessagePack</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for MessagePack.</Description>
-    <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.1.1</Version>
-    <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MessagePack" />

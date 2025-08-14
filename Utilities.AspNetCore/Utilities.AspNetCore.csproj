@@ -1,36 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
     <AssemblyName>SidekickNet.Utilities.AspNetCore</AssemblyName>
     <RootNamespace>SidekickNet.Utilities.AspNetCore</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Authors>SidekickNet</Authors>
     <Description>Provides utility methods for ASP.NET Core.</Description>
-    <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.1.1</Version>
-    <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" />

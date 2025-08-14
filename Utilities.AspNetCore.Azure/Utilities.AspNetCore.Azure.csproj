@@ -3,35 +3,13 @@
   <PropertyGroup>
     <AssemblyName>SidekickNet.Utilities.AspNetCore.Azure</AssemblyName>
     <RootNamespace>SidekickNet.Utilities.AspNetCore.Azure</RootNamespace>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Authors>SidekickNet</Authors>
     <Description>Provides Azure related utilities for ASP.NET Core.</Description>
-    <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
-    <Version>1.1.1</Version>
-    <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Core" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" />

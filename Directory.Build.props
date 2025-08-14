@@ -1,0 +1,35 @@
+<Project>
+    <!-- Common Properties for All Projects -->
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
+    </PropertyGroup>
+
+    <!-- Package Properties -->
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Authors>SidekickNet</Authors>
+        <Copyright>Copyright (c) Zhang Shen. All rights reserved.</Copyright>
+        <RepositoryType>Git</RepositoryType>
+        <RepositoryUrl>https://github.com/cnshenj/SidekickNet.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/cnshenj/SidekickNet</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+
+        <!-- Default Version - will be overridden by specific project groups -->
+        <Version>1.1.1</Version>
+    </PropertyGroup>
+
+    <!-- Common ItemGroups -->
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+</Project>
