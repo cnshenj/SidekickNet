@@ -4,11 +4,14 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Test'))">
         <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <!-- Package Properties -->
-    <PropertyGroup>
+    <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Test'))">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
